@@ -11,36 +11,56 @@ public class TeamCreationTests extends TestBase {
     public void testTeamCreationFromButtonOnHeader() throws InterruptedException {
 
         int beforeCountTeams = getTeamsCount();
+
+
         System.out.println(beforeCountTeams);
-        clickOnWebElement(By.cssSelector("[data-test-id='header-create-menu-button']"));
-        Thread.sleep(3000);
+        clickButtonPlusUp();
         selectCreateSomethingFromDropDown(By.cssSelector("[data-test-id='header-create-team-button']"));
         Thread.sleep(3000);
         fillTeamCreationForm(teamName, description);
         Thread.sleep(3000);
         clickContinueButton();
         Thread.sleep(3000);
-        clickOnWebElement(By.xpath("//a[@class='eg0KI5SqghoOFd']"));
-//        return to home page
-        int afterCountTeams = getTeamsCount();
-        System.out.println(afterCountTeams);
-        Assert.assertEquals(afterCountTeams + 1, beforeCountTeams);
+        clickOnWebElement(By.xpath("//a[@class='eg0KI5SqghoOFd']"));//click on the inscription "return to home page"
+        String createdTeamName = getTeamNameFromPage();
+        Assert.assertEquals(createdTeamName.toLowerCase(), teamName.toLowerCase());
+        returnHome();
+        System.out.println(getTeamsCount());
+        Assert.assertEquals(getTeamsCount(), beforeCountTeams + 1);
+
         // Assert.assertTrue(isUserLoggedIn(By.xpath("//a[@class='button-link tabbed-pane-header-details-edit js-edit-profile']")), "ass");
     }
 
-    public int getTeamsCount() {
+    @Test(enabled = true)
 
-        return driver.findElements(By.xpath("//*[@class='NC6qaILF7dGKjb']/../li")).size();
+    public void testCreatBoardFromButtonPlusLeft() throws InterruptedException {
+
+        int beforeCountTeams = getTeamsCount();
+        clickOnWebElement(By.cssSelector("[data-test-id='home-navigation-create-team-button']"));
+        fillTeamCreationForm(teamName, description);
+        Thread.sleep(3000);
+        clickContinueButton();
+        Thread.sleep(3000);
+        clickOnWebElement(By.xpath("//a[@class='eg0KI5SqghoOFd']"));//click on the inscription "return to home page"
+        String createdTeamName = getTeamNameFromPage();
+        Assert.assertEquals(createdTeamName.toLowerCase(), teamName.toLowerCase());
+        returnHome();
+        System.out.println(getTeamsCount());
+        Assert.assertEquals(getTeamsCount(), beforeCountTeams + 1);
+
+
     }
+
 
     @Test(enabled = false)
     public void testTeamCancelCreationFromButtonOnHeader() {
 
-        clickOnPlusButtonOnHeader();
+        clickButtonPlusUp();
         selectCreateSomethingFromDropDown(By.cssSelector("[data-test-id='header-create-board-button']"));
         fillTeamCreationForm(teamName, description);
         clickXorCancel();
         //Assert.assertTrue(isUserLoggedIn(), "ass");
     }
+
 
 }
